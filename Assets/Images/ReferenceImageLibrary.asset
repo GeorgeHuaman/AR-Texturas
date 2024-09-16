@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5679152924257519411
+  m_GuidHigh: 1580217142308454826
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5083926604638971562
+      m_GuidHigh: 15429401751642630037
+    m_SerializedTextureGuid:
+      m_GuidLow: 519148504438363952
+      m_GuidHigh: 13061574419165012586
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: REF1
+    m_Texture: {fileID: 2800000, guid: 70b9573062d007346ae2a825bb0844b5, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5717776078237480934
+      m_GuidHigh: 7584846104519379884
+    m_SerializedTextureGuid:
+      m_GuidLow: 12868146302298136822
+      m_GuidHigh: 4703931049630185225
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: REF2
+    m_Texture: {fileID: 2800000, guid: 323ca0f6d6e2b294093723fd5db84741, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 4867497630374329408
+      m_GuidHigh: 13447638938644081542
+    m_SerializedTextureGuid:
+      m_GuidLow: 3662598101187869383
+      m_GuidHigh: 7130030305975488090
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: REF3
+    m_Texture: {fileID: 2800000, guid: 5852bac7299132d45a4e7069c9f4f262, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5307881641384128600
+      m_GuidHigh: 9462122545392732585
+    m_SerializedTextureGuid:
+      m_GuidLow: 16344895163890599257
+      m_GuidHigh: 9086193751083253114
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: REF2OLD
+    m_Texture: {fileID: 2800000, guid: 76b30559bb8de2d47afdb06d13a5187e, type: 3}
