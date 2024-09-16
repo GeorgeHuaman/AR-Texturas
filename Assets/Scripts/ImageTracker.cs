@@ -12,7 +12,6 @@ public class ImageTracker : MonoBehaviour
     public List<GameObject> ARObjects = new List<GameObject>();
     public ARSession arSession;
     private bool isReset;
-    private bool oncel;
     void Awake()
     {
         trackedImages = GetComponent<ARTrackedImageManager>();
@@ -26,10 +25,6 @@ public class ImageTracker : MonoBehaviour
     void OnDisable()
     {
         trackedImages.trackedImagesChanged -= OnTrackedImagesChanged;
-    }
-    private void Update()
-    {
-        //Refresh();
     }
 
     // Event Handler
