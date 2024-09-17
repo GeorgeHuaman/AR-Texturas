@@ -132,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 37859278}
   - component: {fileID: 37859277}
+  - component: {fileID: 37859279}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -169,6 +170,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &37859279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37859276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789bc7ebfbed33849a7c04fbc3ce537e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectManipulator: {fileID: 37859277}
+  quadMaterial: {fileID: 0}
+  texture1: {fileID: 2800000, guid: f764b81294a684245ac31f80438b223d, type: 3}
+  texture2: {fileID: 2800000, guid: 96cb99cfd0ad59f4a82717d81c63fe88, type: 3}
 --- !u!1 &188457693
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +394,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 706091652}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 37859279}
+        m_TargetAssemblyTypeName: ChangeTexture, Assembly-CSharp
+        m_MethodName: ToggleTexture
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &706091652
 MonoBehaviour:
   m_ObjectHideFlags: 0
