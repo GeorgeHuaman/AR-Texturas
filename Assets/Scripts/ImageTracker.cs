@@ -11,7 +11,7 @@ public class ImageTracker : MonoBehaviour
 
     public List<GameObject> ARObjects = new List<GameObject>();
     public ARSession arSession;
-    private bool isReset;
+    public ObjectManipulator objectManipulator;
     void Awake()
     {
         trackedImages = GetComponent<ARTrackedImageManager>();
@@ -35,74 +35,26 @@ public class ImageTracker : MonoBehaviour
         {
             foreach (var arPrefab in ArPrefabs)
             {
-                if (trackedImage.referenceImage.name == arPrefab.name && ARObjects.Count == 0)
+                if (trackedImage.referenceImage.name == arPrefab.name)
                 {
-                    //para android
-                    //var newPrefab = Instantiate(arPrefab, trackedImage.transform);
-
-                    //para IOS
-                    var newPrefab = Instantiate(arPrefab, trackedImage.transform.position, Quaternion.identity);
-
+                    var newPrefab = Instantiate(arPrefab, trackedImage.transform);
                     ARObjects.Add(newPrefab);
+                    objectManipulator.arObject = newPrefab;
                 }
             }
         }
 
-        if(!isReset)
+        //Update tracking position
+        foreach (var trackedImage in eventArgs.updated)
         {
-            //Update tracking position
-            foreach (var trackedImage in eventArgs.updated)
+            foreach (var gameObject in ARObjects)
             {
-                foreach (var gameObject in ARObjects)
+                if (gameObject.name == trackedImage.name)
                 {
-                    if (gameObject.name == trackedImage.name)
-                    {
-                        gameObject.SetActive(trackedImage.trackingState == TrackingState.Tracking);
-                    }
+                    gameObject.SetActive(trackedImage.trackingState == TrackingState.Tracking);
                 }
             }
         }
-        
 
-        
-    }
-
-    public void Refresh()
-    {
-        int i = 0;
-
-        foreach (var trackedImage in trackedImages.trackables)
-        {
-            if (trackedImage.trackingState == TrackingState.Limited)
-            {
-                ARObjects[i].SetActive(false);
-            }
-
-            if (trackedImage.trackingState == TrackingState.Tracking)
-            {
-                ARObjects[i].SetActive(true);
-            }
-            i++;
-        }
-    }
-
-    public void Refresh2()
-    {
-
-        isReset = true;
-        // Limpiar todos los objetos AR instanciados para evitar duplicados
-        foreach (var arObject in ARObjects)
-        {
-            if (arObject != null)
-            {
-                Destroy(arObject/*.transform.parent.gameObject*/);
-
-
-            }
-        }
-        ARObjects.Clear();
-        // Reiniciar la sesión AR
-        arSession.Reset();
-        isReset = false;
     }
 }
