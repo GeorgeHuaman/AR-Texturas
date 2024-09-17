@@ -153,9 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arObject: {fileID: 0}
-  text: {fileID: 874308880}
   arCamera: {fileID: 1031940528}
-  scaleFactor: 0.2
+  text: {fileID: 874308880}
+  scaleFactor: 0.1
 --- !u!4 &37859278
 Transform:
   m_ObjectHideFlags: 0

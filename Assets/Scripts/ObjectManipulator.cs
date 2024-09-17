@@ -1,32 +1,47 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class ObjectManipulator : MonoBehaviour
 {
     public GameObject arObject;
-    public TMP_Text text;
-    [SerializeField] private Camera arCamera;
 
+    [SerializeField] private Camera arCamera;
+    public TMP_Text text;
     [SerializeField] private float scaleFactor = 0.1f;
 
     private float touchDist;
-    private float scaleTolerance = 20f;
 
+    private float scaleTolerance = 20f;
+    private BoxCollider touchedSide = null;
+    private Vector2 initialTouchPosition;
+    private Vector3 initialScale;
+    private Vector3 initialPosition;
     void Update()
     {
         if (Input.touchCount > 0)
         {
             Touch touchOne = Input.GetTouch(0);
 
+            ScaleAllObject(touchOne);
+
             if (touchOne.phase == TouchPhase.Began)
             {
-                DetectCorner(touchOne);
+                //DetectSide(touchOne);
+                if (touchedSide != null)
+                {
+                    initialTouchPosition = touchOne.position;
+                    initialScale = arObject.transform.localScale;
+                    initialPosition = arObject.transform.position;
+                }
             }
 
-            ScaleAllObject(touchOne);
+            //if (touchOne.phase == TouchPhase.Moved && touchedSide != null)
+            //{
+            //    ScaleQuadSide(touchOne);
+            //}
         }
     }
 
@@ -54,62 +69,68 @@ public class ObjectManipulator : MonoBehaviour
             }
         }
     }
+    //void ScaleQuadSide(Touch touch)
+    //{
+    //    if (Input.touchCount == 1)
+    //    {
+    //        if (touchedSide != null)
+    //        {
+    //            // Obtener la diferencia entre la posición del toque actual y la inicial
+    //            Vector2 deltaPosition = touch.position - initialTouchPosition;
 
-    void DetectCorner(Touch touch)
+    //            // Obtener las escalas y posiciones actuales
+    //            Vector3 currentScale = arObject.transform.localScale;
+    //            Vector3 currentPosition = arObject.transform.position;
+
+    //            // Ajustar la escala en Y y la posición en Z
+    //            float scaleChangeY;
+    //            float positionChangeZ;
+
+    //            if (touchedSide.name == "Top")
+    //            {
+    //                // Si se mueve hacia arriba, aumentar la escala en Y
+    //                scaleChangeY = deltaPosition.y * scaleFactor;
+
+    //                // Ajustar la nueva escala Y
+    //                currentScale.y = Mathf.Clamp(initialScale.y + scaleChangeY, 0.1f, 2f);
+
+    //                // Ajustar la posición en Z para mover el objeto hacia abajo mientras se escala
+    //                positionChangeZ = (currentScale.y - initialScale.y) / 2;
+    //                currentPosition.z = initialPosition.z - positionChangeZ;
+    //            }
+    //            else if (touchedSide.name == "Bottom")
+    //            {
+    //                // Si se mueve hacia abajo, reducir la escala en Y
+    //                scaleChangeY = deltaPosition.y * scaleFactor;
+
+    //                // Ajustar la nueva escala Y
+    //                currentScale.y = Mathf.Clamp(initialScale.y - scaleChangeY, 0.1f, 2f);
+
+    //                // Ajustar la posición en Z para mover el objeto hacia arriba mientras se escala
+    //                positionChangeZ = (initialScale.y - currentScale.y) / 2;
+    //                currentPosition.z = initialPosition.z + positionChangeZ;
+    //            }
+
+    //            // Aplicar los cambios de escala y posición
+    //            arObject.transform.localScale = Vector3.Lerp(arObject.transform.localScale, currentScale, 0.1f);
+    //            arObject.transform.position = Vector3.Lerp(arObject.transform.localPosition, currentPosition, 0.1f);
+    //        }
+    //    }
+    //}
+
+    void DetectSide(Touch touch)
     {
         Ray ray = arCamera.ScreenPointToRay(touch.position);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform == arObject.transform)
+            if (hit.collider != null)
             {
-                Vector3[] corners = GetWorldCorners(arObject);
-                Vector3 hitPoint = hit.point;
-
-                // Encuentra la esquina más cercana al punto de impacto
-                Vector3 closestCorner = corners[0];
-                float closestDistance = Vector3.Distance(hitPoint, closestCorner);
-
-                for (int i = 1; i < corners.Length; i++)
-                {
-                    float distance = Vector3.Distance(hitPoint, corners[i]);
-                    if (distance < closestDistance)
-                    {
-                        closestCorner = corners[i];
-                        closestDistance = distance;
-                    }
-                }
-
-                text.text = "Esquina más cercana tocada: " + closestCorner;
-                Debug.Log("Esquina más cercana tocada: " + closestCorner);
+                touchedSide = hit.collider as BoxCollider;
+                text.text = "Lado del Quad tocado: " + touchedSide.name;
+                Debug.Log("Lado del Quad tocado: " + touchedSide.name);
             }
         }
     }
-
-    Vector3[] GetWorldCorners(GameObject obj)
-    {
-        MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
-        if (meshFilter == null) return null;
-
-        Mesh mesh = meshFilter.mesh;
-        Bounds bounds = mesh.bounds;
-
-        // Las 4 esquinas en coordenadas locales
-        Vector3[] localCorners = new Vector3[4];
-        localCorners[0] = new Vector3(bounds.min.x, bounds.min.y, bounds.center.z); // Esquina inferior izquierda
-        localCorners[1] = new Vector3(bounds.max.x, bounds.min.y, bounds.center.z); // Esquina inferior derecha
-        localCorners[2] = new Vector3(bounds.min.x, bounds.max.y, bounds.center.z); // Esquina superior izquierda
-        localCorners[3] = new Vector3(bounds.max.x, bounds.max.y, bounds.center.z); // Esquina superior derecha
-
-        // Convertir las esquinas locales a espacio mundial
-        Vector3[] worldCorners = new Vector3[4];
-        for (int i = 0; i < 4; i++)
-        {
-            worldCorners[i] = obj.transform.TransformPoint(localCorners[i]);
-        }
-
-        return worldCorners;
-    }
-
 }
