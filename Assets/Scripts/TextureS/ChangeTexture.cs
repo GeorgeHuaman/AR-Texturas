@@ -9,6 +9,8 @@ public class ChangeTexture : MonoBehaviour
     public Texture texture1;     
     public Texture texture2;       
 
+    public List<MainTextures> mainTextures = new List<MainTextures>();
+
     private bool isUsingTexture1 = true;
     private bool once;
 
@@ -53,4 +55,13 @@ public class ChangeTexture : MonoBehaviour
         }
         
     }
+
+
+}
+
+[System.Serializable]
+public class MainTextures
+{
+    public Texture principalTexture;
+    public List<Texture> variantTextures = new List<Texture>();
 }
