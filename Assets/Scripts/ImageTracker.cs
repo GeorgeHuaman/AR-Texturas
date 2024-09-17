@@ -27,7 +27,6 @@ public class ImageTracker : MonoBehaviour
         trackedImages.trackedImagesChanged -= OnTrackedImagesChanged;
     }
 
-    // Event Handler
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
         //Create object based on image tracked
@@ -35,9 +34,14 @@ public class ImageTracker : MonoBehaviour
         {
             foreach (var arPrefab in ArPrefabs)
             {
-                if (trackedImage.referenceImage.name == arPrefab.name)
+                if (trackedImage.referenceImage.name == arPrefab.name && ARObjects.Count == 0)
                 {
+                    //para android
                     var newPrefab = Instantiate(arPrefab, trackedImage.transform);
+
+                    //para IOS
+                    //var newPrefab = Instantiate(arPrefab, trackedImage.transform.position, Quaternion.identity);
+
                     ARObjects.Add(newPrefab);
                     objectManipulator.arObject = newPrefab;
                 }
@@ -56,5 +60,8 @@ public class ImageTracker : MonoBehaviour
             }
         }
 
+
+
     }
+
 }

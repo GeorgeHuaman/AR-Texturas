@@ -6,12 +6,11 @@ public class ChangeTexture : MonoBehaviour
 {
     public ObjectManipulator objectManipulator;
     public Material quadMaterial;
-    public Texture texture1;     
-    public Texture texture2;       
+    public List<MainTexture> mainTextures;
 
-    public List<MainTextures> mainTextures = new List<MainTextures>();
+    [SerializeField]private int currentMainTextureIndex = 0; // Índice de la textura principal actual
+    [SerializeField]private int currentVariantIndex = 0;     // Índice de la variante actual
 
-    private bool isUsingTexture1 = true;
     private bool once;
 
     private void Update()
@@ -20,48 +19,49 @@ public class ChangeTexture : MonoBehaviour
         {
             quadMaterial = objectManipulator.arObject.GetComponent<Renderer>().material;
             once = true;
-        }
-    }
-    private void SetTexture1()
-    {
-        if (quadMaterial != null && texture1 != null)
-        {
-            quadMaterial.mainTexture = texture1;
-            isUsingTexture1 = true;
+
+            ApplyMainTexture();
         }
     }
 
-    private void SetTexture2()
+    public void ChangeMainTexture()
     {
-        if (quadMaterial != null && texture2 != null)
+        if (quadMaterial != null && mainTextures.Count > 0)
         {
-            quadMaterial.mainTexture = texture2;
-            isUsingTexture1 = false;
+            currentMainTextureIndex = (currentMainTextureIndex + 1) % mainTextures.Count;
+            currentVariantIndex = 0;
+            ApplyMainTexture();
         }
     }
 
-    public void ToggleTexture()
+    public void ChangeVariantTexture()
     {
-        if (!objectManipulator.arObject)
+        if (quadMaterial != null && mainTextures[currentMainTextureIndex].variants.Count > 0)
         {
-            if (isUsingTexture1)
-            {
-                SetTexture2();
-            }
-            else
-            {
-                SetTexture1();
-            }
+            currentVariantIndex = (currentVariantIndex + 1) % mainTextures[currentMainTextureIndex].variants.Count;
+            ApplyVariantTexture();
         }
-        
     }
 
+    // Método para aplicar la textura principal o variante actual
+    private void ApplyMainTexture()
+    {
+        quadMaterial.mainTexture = mainTextures[currentMainTextureIndex].mainTexture;
+    }
+
+    private void ApplyVariantTexture()
+    {
+        if (mainTextures[currentMainTextureIndex].variants.Count > 0)
+        {
+            quadMaterial.mainTexture = mainTextures[currentMainTextureIndex].variants[currentVariantIndex];
+        }
+    }
 
 }
 
 [System.Serializable]
-public class MainTextures
+public class MainTexture
 {
-    public Texture principalTexture;
-    public List<Texture> variantTextures = new List<Texture>();
+    public Texture mainTexture;
+    public List<Texture> variants = new List<Texture>();
 }
