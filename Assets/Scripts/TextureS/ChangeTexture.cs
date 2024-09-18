@@ -5,11 +5,11 @@ using UnityEngine;
 public class ChangeTexture : MonoBehaviour
 {
     public ObjectManipulator objectManipulator;
-    public Material quadMaterial;
-    public List<MainTexture> mainTextures;
+    public Renderer quadRenderer; // Cambiado de Material a Renderer para acceder a los materiales
+    public List<MainMaterial> mainMaterials; // Lista de MainMaterial en lugar de texturas
 
-    [SerializeField]private int currentMainTextureIndex = 0; // Índice de la textura principal actual
-    [SerializeField]private int currentVariantIndex = 0;     // Índice de la variante actual
+    [SerializeField] private int currentMainMaterialIndex = 0; // Índice del material principal actual
+    [SerializeField] private int currentVariantIndex = 0; // Índice de la variante actual
 
     private bool once;
 
@@ -17,51 +17,55 @@ public class ChangeTexture : MonoBehaviour
     {
         if (objectManipulator.arObject != null && !once)
         {
-            quadMaterial = objectManipulator.arObject.GetComponent<Renderer>().material;
+            quadRenderer = objectManipulator.arObject.GetComponent<Renderer>();
             once = true;
 
-            ApplyMainTexture();
+            ApplyMainMaterial();
         }
     }
 
-    public void ChangeMainTexture()
+    public void ChangeMainMaterial()
     {
-        if (quadMaterial != null && mainTextures.Count > 0)
+        if (mainMaterials.Count > 0)
         {
-            currentMainTextureIndex = (currentMainTextureIndex + 1) % mainTextures.Count;
+            currentMainMaterialIndex = (currentMainMaterialIndex + 1) % mainMaterials.Count;
             currentVariantIndex = 0;
-            ApplyMainTexture();
+            ApplyMainMaterial();
         }
     }
 
-    public void ChangeVariantTexture()
+    public void ChangeVariantMaterial()
     {
-        if (quadMaterial != null && mainTextures[currentMainTextureIndex].variants.Count > 0)
+        if (mainMaterials.Count > 0 && mainMaterials[currentMainMaterialIndex].variants.Count > 0)
         {
-            currentVariantIndex = (currentVariantIndex + 1) % mainTextures[currentMainTextureIndex].variants.Count;
-            ApplyVariantTexture();
+            currentVariantIndex = (currentVariantIndex + 1) % mainMaterials[currentMainMaterialIndex].variants.Count;
+            ApplyVariantMaterial();
         }
     }
 
-    // Método para aplicar la textura principal o variante actual
-    private void ApplyMainTexture()
+    // Método para aplicar el material principal actual
+    private void ApplyMainMaterial()
     {
-        quadMaterial.mainTexture = mainTextures[currentMainTextureIndex].mainTexture;
+        if (quadRenderer != null)
+        {
+            quadRenderer.material = mainMaterials[currentMainMaterialIndex].mainMaterial;
+        }
     }
 
-    private void ApplyVariantTexture()
+    // Método para aplicar la variante de material actual
+    private void ApplyVariantMaterial()
     {
-        if (mainTextures[currentMainTextureIndex].variants.Count > 0)
+        if (quadRenderer != null && mainMaterials[currentMainMaterialIndex].variants.Count > 0)
         {
-            quadMaterial.mainTexture = mainTextures[currentMainTextureIndex].variants[currentVariantIndex];
+            quadRenderer.material = mainMaterials[currentMainMaterialIndex].variants[currentVariantIndex];
         }
     }
 
 }
 
 [System.Serializable]
-public class MainTexture
+public class MainMaterial
 {
-    public Texture mainTexture;
-    public List<Texture> variants = new List<Texture>();
+    public Material mainMaterial;
+    public List<Material> variants = new List<Material>();
 }

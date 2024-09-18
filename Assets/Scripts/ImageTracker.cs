@@ -12,6 +12,8 @@ public class ImageTracker : MonoBehaviour
     public List<GameObject> ARObjects = new List<GameObject>();
     public ARSession arSession;
     public ObjectManipulator objectManipulator;
+    public CreateQuad CreateQuad;
+    public GameObject wallEditorUI;
     void Awake()
     {
         trackedImages = GetComponent<ARTrackedImageManager>();
@@ -44,6 +46,8 @@ public class ImageTracker : MonoBehaviour
 
                     ARObjects.Add(newPrefab);
                     objectManipulator.arObject = newPrefab;
+                    CreateQuad.meshFilter = newPrefab.GetComponent<MeshFilter>();
+                    wallEditorUI.SetActive(true);
                 }
             }
         }

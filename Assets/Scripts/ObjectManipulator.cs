@@ -37,11 +37,6 @@ public class ObjectManipulator : MonoBehaviour
                     initialPosition = arObject.transform.position;
                 }
             }
-
-            //if (touchOne.phase == TouchPhase.Moved && touchedSide != null)
-            //{
-            //    ScaleQuadSide(touchOne);
-            //}
         }
     }
 
