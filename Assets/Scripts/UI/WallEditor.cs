@@ -28,7 +28,7 @@ public class WallEditor : MonoBehaviour
                 createQuadScript.height = height;
 
                 // Llamar al método CreateWall para crear el mesh
-                createQuadScript.CreateWall();
+                createQuadScript.CreateWallQR();
                 panelEditWall.SetActive(false);
             }
             else
@@ -53,7 +53,7 @@ public class WallEditor : MonoBehaviour
 
     public void ActiveDesactiveEditUI()
     {
-        if(createQuadScript.meshFilter!=null)
+        if(createQuadScript.meshFilterQR!=null)
         {
             panelEditWall.SetActive(!panelEditWall.activeSelf);
         }

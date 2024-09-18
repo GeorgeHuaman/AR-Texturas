@@ -6,19 +6,28 @@ public class ChangeTexture : MonoBehaviour
 {
     public ObjectManipulator objectManipulator;
     public Renderer quadRenderer; // Cambiado de Material a Renderer para acceder a los materiales
+    public Renderer quadRendererQr;
     public List<MainMaterial> mainMaterials; // Lista de MainMaterial en lugar de texturas
 
     [SerializeField] private int currentMainMaterialIndex = 0; // Índice del material principal actual
     [SerializeField] private int currentVariantIndex = 0; // Índice de la variante actual
 
     private bool once;
+    private bool onceQR;
 
     private void Update()
     {
-        if (objectManipulator.arObject != null && !once)
+        if (Manager.Instance.arObject != null && !once)
         {
-            quadRenderer = objectManipulator.arObject.GetComponent<Renderer>();
+            quadRenderer = Manager.Instance.arObject.GetComponent<Renderer>();
             once = true;
+
+            ApplyMainMaterial();
+        }
+        if (Manager.Instance.arObjectQR != null && !onceQR)
+        {
+            quadRendererQr = Manager.Instance.arObjectQR.GetComponent<Renderer>();
+            onceQR = true;
 
             ApplyMainMaterial();
         }
@@ -50,6 +59,10 @@ public class ChangeTexture : MonoBehaviour
         {
             quadRenderer.material = mainMaterials[currentMainMaterialIndex].mainMaterial;
         }
+        if (quadRendererQr != null)
+        {
+            quadRendererQr.material = mainMaterials[currentMainMaterialIndex].mainMaterial;
+        }
     }
 
     // Método para aplicar la variante de material actual
@@ -58,6 +71,10 @@ public class ChangeTexture : MonoBehaviour
         if (quadRenderer != null && mainMaterials[currentMainMaterialIndex].variants.Count > 0)
         {
             quadRenderer.material = mainMaterials[currentMainMaterialIndex].variants[currentVariantIndex];
+        }
+        if (quadRendererQr != null && mainMaterials[currentMainMaterialIndex].variants.Count > 0)
+        {
+            quadRendererQr.material = mainMaterials[currentMainMaterialIndex].variants[currentVariantIndex];
         }
     }
 

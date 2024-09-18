@@ -6,6 +6,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 public class ImageTracker : MonoBehaviour
 {
+    public PlaneManager planeManager;
     private ARTrackedImageManager trackedImages;
     public GameObject[] ArPrefabs;
 
@@ -38,31 +39,29 @@ public class ImageTracker : MonoBehaviour
             {
                 if (trackedImage.referenceImage.name == arPrefab.name && ARObjects.Count == 0)
                 {
-                    //para android
                     var newPrefab = Instantiate(arPrefab, trackedImage.transform);
 
-                    //para IOS
-                    //var newPrefab = Instantiate(arPrefab, trackedImage.transform.position, Quaternion.identity);
-
                     ARObjects.Add(newPrefab);
-                    objectManipulator.arObject = newPrefab;
-                    CreateQuad.meshFilter = newPrefab.GetComponent<MeshFilter>();
+                    Manager.Instance.arObjectQR = newPrefab;
                     wallEditorUI.SetActive(true);
                 }
             }
         }
-
-        //Update tracking position
-        foreach (var trackedImage in eventArgs.updated)
+        if (!Manager.Instance.isReset)
         {
-            foreach (var gameObject in ARObjects)
+            //Update tracking position
+            foreach (var trackedImage in eventArgs.updated)
             {
-                if (gameObject.name == trackedImage.name)
+                foreach (var gameObject in ARObjects)
                 {
-                    gameObject.SetActive(trackedImage.trackingState == TrackingState.Tracking);
+                    if (gameObject.name == trackedImage.name)
+                    {
+                        gameObject.SetActive(trackedImage.trackingState == TrackingState.Tracking);
+                    }
                 }
             }
         }
+        
 
 
 
