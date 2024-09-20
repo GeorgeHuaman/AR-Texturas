@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChangeTexture : MonoBehaviour
 {
     public ObjectManipulator objectManipulator;
-    public Renderer quadRenderer; // Cambiado de Material a Renderer para acceder a los materiales
+    public Renderer quadRenderer;
     public Renderer quadRendererQr;
-    public List<MainMaterial> mainMaterials; // Lista de MainMaterial en lugar de texturas
+    public List<MainMaterial> mainMaterials;
 
-    [SerializeField] private int currentMainMaterialIndex = 0; // Índice del material principal actual
-    [SerializeField] private int currentVariantIndex = 0; // Índice de la variante actual
+    [SerializeField] private int currentMainMaterialIndex = 0;
+    [SerializeField] private int currentVariantIndex = 0; 
 
     private bool once;
     private bool onceQR;
+
+    public Image mainTextures;
+    public Image variantTextures;
 
     private void Update()
     {
@@ -37,9 +41,14 @@ public class ChangeTexture : MonoBehaviour
     {
         if (mainMaterials.Count > 0)
         {
-            currentMainMaterialIndex = (currentMainMaterialIndex + 1) % mainMaterials.Count;
-            currentVariantIndex = 0;
-            ApplyMainMaterial();
+            if (quadRenderer != null || quadRendererQr != null)
+            {
+                currentMainMaterialIndex = (currentMainMaterialIndex + 1) % mainMaterials.Count;
+                currentVariantIndex = 0;
+                ApplyMainMaterial();
+                UpdateMainTextureUI();
+            }
+                
         }
     }
 
@@ -47,8 +56,13 @@ public class ChangeTexture : MonoBehaviour
     {
         if (mainMaterials.Count > 0 && mainMaterials[currentMainMaterialIndex].variants.Count > 0)
         {
-            currentVariantIndex = (currentVariantIndex + 1) % mainMaterials[currentMainMaterialIndex].variants.Count;
-            ApplyVariantMaterial();
+            if (quadRenderer != null || quadRendererQr != null)
+            {
+                currentVariantIndex = (currentVariantIndex + 1) % mainMaterials[currentMainMaterialIndex].variants.Count;
+                ApplyVariantMaterial();
+                UpdateVariantTextureUI();
+            }
+            
         }
     }
 
@@ -63,6 +77,7 @@ public class ChangeTexture : MonoBehaviour
         {
             quadRendererQr.material = mainMaterials[currentMainMaterialIndex].mainMaterial;
         }
+        UpdateVariantTextureUI();
     }
 
     // Método para aplicar la variante de material actual
@@ -78,6 +93,29 @@ public class ChangeTexture : MonoBehaviour
         }
     }
 
+    private void UpdateMainTextureUI()
+    {
+        Material currentMaterial = mainMaterials[currentMainMaterialIndex].mainMaterial;
+        Texture2D albedoTexture = (Texture2D)currentMaterial.GetTexture("_MainTex");
+
+        if (albedoTexture != null)
+        {
+            Sprite albedoSprite = Sprite.Create(albedoTexture, new Rect(0, 0, albedoTexture.width, albedoTexture.height), new Vector2(0.5f, 0.5f));
+            mainTextures.sprite = albedoSprite;
+        }
+    }
+
+    private void UpdateVariantTextureUI()
+    {
+        Material currentVariant = mainMaterials[currentMainMaterialIndex].variants[currentVariantIndex];
+        Texture2D albedoTexture = (Texture2D)currentVariant.GetTexture("_MainTex");
+
+        if (albedoTexture != null)
+        {
+            Sprite albedoSprite = Sprite.Create(albedoTexture, new Rect(0, 0, albedoTexture.width, albedoTexture.height), new Vector2(0.5f, 0.5f));
+            variantTextures.sprite = albedoSprite;
+        }
+    }
 }
 
 [System.Serializable]

@@ -66,22 +66,11 @@ public class PlaneManager : MonoBehaviour
                     }
                        
                         
-                    //float yOffset = model3DPlaced.transform.localScale.y / 2;
-                    model3DPlaced.transform.position = new Vector3(plane.center.x, plane.center.y /*+ yOffset*/, plane.center.z);
+                    model3DPlaced.transform.position = new Vector3(plane.center.x, plane.center.y, plane.center.z);
                     model3DPlaced.transform.forward = -plane.normal;
                     createQuadScript.meshFilter=model3DPlaced.GetComponent<MeshFilter>(); 
                     createQuadScript.CreateWall();
 
-
-                    
-
-                    
-                    //float yOffset = model3DPlaced.transform.localScale.y / 2;
-                    //model3DPlaced.transform.position = new Vector3(plane.center.x, plane.center.y + yOffset, plane.center.z);
-                    //model3DPlaced.transform.forward = plane.normal;
-
-                    //Detener la detección de planos
-                    //StopPlaneDetection();
                 }
             }
         }

@@ -10,6 +10,7 @@ public class Manager : MonoBehaviour
     public GameObject arObjectQR;
     public ARSession arSession;
     public ImageTracker imageTracker;
+
     public bool isReset;
     private void Awake()
     {
