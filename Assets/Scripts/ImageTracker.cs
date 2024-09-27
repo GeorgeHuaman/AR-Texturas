@@ -15,6 +15,7 @@ public class ImageTracker : MonoBehaviour
     public ObjectManipulator objectManipulator;
     public CreateQuad CreateQuad;
     public GameObject wallEditorUI;
+    public GameObject buttonEdit;
     void Awake()
     {
         trackedImages = GetComponent<ARTrackedImageManager>();
@@ -44,6 +45,8 @@ public class ImageTracker : MonoBehaviour
                     ARObjects.Add(newPrefab);
                     Manager.Instance.arObjectQR = newPrefab;
                     wallEditorUI.SetActive(true);
+                    buttonEdit.SetActive(true);
+                    
                 }
             }
         }

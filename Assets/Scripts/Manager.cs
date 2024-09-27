@@ -39,7 +39,6 @@ public class Manager : MonoBehaviour
         }
         
         arObject = null;
-        // Reiniciar la sesión AR
         arSession.Reset();
         isReset = false;
     }

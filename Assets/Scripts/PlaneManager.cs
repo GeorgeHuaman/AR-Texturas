@@ -71,6 +71,7 @@ public class PlaneManager : MonoBehaviour
                     createQuadScript.meshFilter=model3DPlaced.GetComponent<MeshFilter>(); 
                     createQuadScript.CreateWall();
 
+
                 }
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CreateQuad : MonoBehaviour
@@ -48,6 +49,7 @@ public class CreateQuad : MonoBehaviour
             newMesh.vertices = vertices;
 
             meshFilter.mesh = newMesh;
+            meshFilter.GetComponent<BoxCollider>().size = new Vector3(width / 100, height / 100, 0);
         }
         
     }
@@ -77,6 +79,7 @@ public class CreateQuad : MonoBehaviour
             newMesh.vertices = vertices;
 
             meshFilterQR.mesh = newMesh;
+            meshFilterQR.GetComponent<BoxCollider>().size = new Vector3(width / 100, height / 100, 0);
         }
 
     }
